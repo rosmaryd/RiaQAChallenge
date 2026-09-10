@@ -61,7 +61,7 @@ repo.
 
 Antes de automatizar, probé el sitio manualmente y encontré que el
 comportamiento real difiere en varios puntos de lo descrito en el
-enunciado. Los dejo documentados porque probar esto — y reportarlo — es
+enunciado. Los dejo documentados porque probar esto, y reportarlo, es
 justamente lo que pide el challenge ("give feedback to a developer"):
 
 1. **El campo "Amount" nunca muestra "Please enter a valid amount".**
@@ -69,10 +69,10 @@ justamente lo que pide el challenge ("give feedback to a developer"):
    caracter nunca llega a formar parte del valor (probado tanto con
    teclado real como forzando el `value` vía evento `input`). Sí existe
    un elemento de error (`#amount-error`) usado para otros mensajes
-   (p. ej. "Maximum is 14,999.99 USD"), pero jamás se puebla con el
+   (p. ej. "Maximum is 14,999.99 USD"), pero no pasa con el
    mensaje de la letra inválida porque el filtrado ocurre antes. El test
    `calculator.test.js` #1 está escrito tal como pide el enunciado y
-   falla a propósito contra esto — es la evidencia reproducible del bug.
+   falla a propósito contra esto, es la evidencia reproducible del bug.
 
 
 2. **La versión en USD de `riamoneytransfer.com` (`/en-us/`) no permite
