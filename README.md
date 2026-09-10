@@ -143,7 +143,7 @@ RiaQAChallenge/
 ├── postman/
 │   └── Ria_QA_Challenge.postman_collection.json
 ├── experiments/                # Scripts de diagnostico puntuales (no forman
-│   │                            # parte del suite — npm test no los corre)
+│   │                           # parte del suite — npm test no los corre)
 │   ├── language-hypothesis.js
 │   └── webdriver-detection-hypothesis.js
 ├── screenshots/                # Resultados (agregar antes de subir a GitHub)
