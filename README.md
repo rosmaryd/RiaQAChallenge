@@ -14,7 +14,7 @@ checks (`jsonplaceholder.typicode.com` and `httpbin.org`).
 ## 1. Selenium E2E tests
 
 ```bash
-cd ria-qa-challenge
+cd ./RiaQAChallenge
 npm install
 npm test
 ```
@@ -132,7 +132,7 @@ selector CSS/XPath directo. Si el sitio cambia un locator, se corrige en un
 solo lugar (`pages/`) en vez de en cada test.
 
 ```
-ria-qa-challenge/
+RiaQAChallenge/
 ├── pages/
 │   ├── BasePage.js             # Helpers compartidos (waits, click, type)
 │   ├── CalculatorPage.js       # Selectores/acciones de riamoneytransfer.com
