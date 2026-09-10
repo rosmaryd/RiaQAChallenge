@@ -1,0 +1,104 @@
+{
+  "info": {
+    "name": "Ria QA Challenge - API Tests",
+    "description": "Backend API tests for the Ria QA coding challenge: GET jsonplaceholder.typicode.com/posts and POST httpbin.org/post.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "GET /posts - status, content, no 'zombie'",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "https://jsonplaceholder.typicode.com/posts/",
+          "protocol": "https",
+          "host": ["jsonplaceholder", "typicode", "com"],
+          "path": ["posts", ""]
+        }
+      },
+      "response": [],
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status code is 200\", function () {",
+              "    pm.response.to.have.status(200);",
+              "});",
+              "",
+              "pm.test(\"All 'title' and 'body' fields have content\", function () {",
+              "    const jsonData = pm.response.json();",
+              "    pm.expect(jsonData).to.be.an('array').that.is.not.empty;",
+              "    jsonData.forEach(function (item, idx) {",
+              "        pm.expect(item.title, `item[${idx}].title`).to.be.a('string').and.not.equal('');",
+              "        pm.expect(item.body, `item[${idx}].body`).to.be.a('string').and.not.equal('');",
+              "    });",
+              "});",
+              "",
+              "pm.test(\"None of the fields contain the word 'zombie'\", function () {",
+              "    const jsonData = pm.response.json();",
+              "    const offenders = jsonData.filter(function (item) {",
+              "        return (item.title + ' ' + item.body).toLowerCase().indexOf('zombie') !== -1;",
+              "    });",
+              "    pm.expect(offenders.length, 'items containing the word zombie').to.eql(0);",
+              "});"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "POST /post - status, topping validation",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"student\": \"Tim Allen\",\n  \"email_address\": \"tim@homeimprovement.com\",\n  \"phone\": \"(408) 8674530\",\n  \"current_grade\": \"B+\",\n  \"topping\": [\n    \"bacon\",\n    \"cheese\",\n    \"mushroom\"\n  ]\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "https://httpbin.org/post",
+          "protocol": "https",
+          "host": ["httpbin", "org"],
+          "path": ["post"]
+        }
+      },
+      "response": [],
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status code is 200 or 201\", function () {",
+              "    pm.expect(pm.response.code).to.be.oneOf([200, 201]);",
+              "});",
+              "",
+              "pm.test(\"topping is bacon, cheese and mushroom\", function () {",
+              "    const jsonData = pm.response.json();",
+              "    pm.expect(jsonData.json.topping).to.eql([\"bacon\", \"cheese\", \"mushroom\"]);",
+              "});",
+              "",
+              "pm.test(\"topping does not contain chicken\", function () {",
+              "    const jsonData = pm.response.json();",
+              "    pm.expect(jsonData.json.topping).to.not.include(\"chicken\");",
+              "});"
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}

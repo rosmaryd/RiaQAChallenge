@@ -1,0 +1,16 @@
+{
+  "name": "ria-qa-challenge",
+  "version": "1.0.0",
+  "description": "QA Engineer coding challenge for Ria Money Transfer: Selenium E2E tests for riamoneytransfer.com + Postman API tests.",
+  "type": "commonjs",
+  "scripts": {
+    "test": "mocha selenium/*.test.js --timeout 60000 --reporter spec"
+  },
+  "author": "Rosmary Diaz",
+  "license": "ISC",
+  "devDependencies": {
+    "chai": "^4.4.1",
+    "mocha": "^10.4.0",
+    "selenium-webdriver": "^4.20.0"
+  }
+}
