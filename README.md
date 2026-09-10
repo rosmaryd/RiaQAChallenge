@@ -75,9 +75,9 @@ justamente lo que pide el challenge ("give feedback to a developer"):
    falla a propósito contra esto, es la evidencia reproducible del bug.
 
 
-2. **La versión en USD de `riamoneytransfer.com` (`/en-us/`) no permite
-   enviar CLP** — no hay selector para "You send" ahí (a diferencia de
-   "They receive"), está fijo en USD. Pero sí existe una versión real y
+2. **El país y moneda de origen, dependen del sitio al cual se redirija,
+   ya que no hay selector para "You send" ahí (a diferencia de
+   "They receive"). Pero sí existe una versión real y
    funcional para Chile en `https://www.riamoneytransfer.com/en-cl/`,
    donde "You send" sí está en CLP, con un máximo de 10.000.000 CLP.
    El proyecto apunta las pruebas a `/en-cl/` (ver hallazgo #4 sobre por qué
@@ -87,17 +87,15 @@ justamente lo que pide el challenge ("give feedback to a developer"):
    mismo botón de la calculadora, solo que le cambiaron el nombre. Es un
    *smart link* de Branch.io (`riamoneytransfer.app.link/...`)
 
-
    El test `1)` en `registration.test.js` ejecuta este camino tal cual
    (`Start your transfer`)
 
-4. **La redirección automática de `/en-us/` a `/en-cl/` es inconsistente
-   entre un visitante real y una sesión automatizada — y la causa exacta
-   quedó sin determinar tras investigarla.** Lo que se probó y se
+4. **La redirección automática del sitio https://www.riamoneytransfer.com/   
+   varía. Viendo que desde una IP ubicada en Chile, haciendo uso del navegador
+   en forma manual redirige a `/en-cl/` y de forma automatizada a `/en-us/`,
+   quedando sin determinar el comportamiento esperado.** Lo que se probó y se
    descartó:
-   - **Con VPN** (navegador real, sin automatizar) a Colombia y México:
-     se queda en `/en-us/`. A España: sí redirige a la versión local.
-     Desde Chile sin VPN (navegador real): redirige a `/en-cl/`.
+
    - **Hipótesis del idioma del navegador:** se probó lanzando Chrome vía
      Selenium con `--lang=es-CL` (`experiments/language-hypothesis.js`).
      `navigator.language` cambiaba correctamente a `es-CL`, pero la
@@ -109,11 +107,15 @@ justamente lo que pide el challenge ("give feedback to a developer"):
      (`experiments/webdriver-detection-hypothesis.js`). La bandera se
      ocultaba correctamente (`navigator.webdriver: false`), pero la
      sesión igual se quedaba en `/en-us/` — **también descartada**.
+   - **Con VPN** (navegador real, sin automatizar) a Colombia y México:
+     se queda en `/en-us/`. A España: sí redirige a la versión local.
+    **Lo que da a pensar que la redirección depende de la disponibilidad
+     de la herramienta de acuerdo al mercado**
 
-   No se profundizó más allá de esto (comparar cookies/tráfico de red
-   entre una sesión real y una automatizada) porque escapa al alcance de
-   este challenge y no cambia la conclusión práctica: el comportamiento
-   de la redirección automática no es confiable ni predecible entre
+   Sin embargo no se profundizó más allá de esto (comparar cookies/tráfico
+   de red entre una sesión real y una automatizada) porque escapa al
+   alcance de este challenge y no cambia la conclusión práctica:
+   el comportamiento de la redirección automática no es predecible entre
    entornos, así que las pruebas de este proyecto **no dependen de
    ella** — navegan directo a `/en-cl/` (ver `BASE_URL` en
    `pages/CalculatorPage.js`) en vez de confiar en que el sitio redirija
